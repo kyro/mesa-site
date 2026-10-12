@@ -1,0 +1,44 @@
+/*
+ * THEME TOKENS. The current look is a neutral placeholder; re-skin by editing
+ * this file only. style.css uses these variables for every color, font and radius.
+ */
+:root {
+  /* surfaces */
+  --bg: #f5f4f0;
+  --surface: #ffffff;
+  --plate: #f2f2f2;           /* matches the render backdrop so images sit seamlessly */
+  --line: #e2e0d9;
+
+  /* text */
+  --ink: #1c1c1a;
+  --ink-2: #4f4d48;
+  --ink-3: #66645e;
+  --accent: #e2703f;
+  --error: #b3261e;
+
+  /* primary CTA */
+  --cta-bg: #1c1c1a;
+  --cta-bg-hover: #33322f;
+  --cta-ink: #f5f4f0;
+
+  /* form fields */
+  --field-bg: #ffffff;
+  --field-line: #cfccc4;
+  --field-placeholder: #8b8981;
+
+  /* DRAFT tag */
+  --draft-bg: #ffdf5e;
+  --draft-ink: #1c1c1a;
+
+  /* type */
+  --font-display: "Iowan Old Style", "Charter", "Bitstream Charter", "Sitka Text", Cambria, "Noto Serif", Georgia, serif;
+  --font-body: system-ui, -apple-system, "Segoe UI", Inter, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-wordmark: var(--font-display);
+
+  /* shape and layout */
+  --radius: 14px;
+  --radius-control: 999px;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, .12);
+  --max: 1120px;
+  --gutter: clamp(20px, 5vw, 48px);
+}

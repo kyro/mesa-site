@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<!-- Static fallbacks for crawlers; app.js overwrites these from copy.js (meta.*). -->
+<title>Sheaf: a calm, paper-like notebook</title>
+<meta name="description" content="A compact e-ink notebook that turns what you write into today's next steps. Quiet by design.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sheaf">
+<meta property="og:title" content="Sheaf: a calm, paper-like notebook">
+<meta property="og:description" content="A compact e-ink notebook that turns what you write into today's next steps. Quiet by design.">
+<!-- Relative until the domain is decided; most scrapers need an absolute og:image URL. -->
+<meta property="og:image" content="img/notebook-open.png">
+<meta property="og:image:alt" content="A compact e-ink notebook, open in an orange folio cover, with a stylus resting on the screen">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#f5f4f0">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='7' y='4' width='18' height='24' rx='3' fill='%231c1c1a'/%3E%3C/svg%3E">
+<link rel="preload" as="image" href="img/notebook-open.webp" type="image/webp" fetchpriority="high">
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="style.css">
+<script src="copy.js" defer></script>
+<script src="app.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="draft" id="draft" hidden></div>
+
+<header class="bar">
+  <div class="wrap bar-in">
+    <a class="wordmark" href="#main" data-c="productName">Sheaf</a>
+    <a class="bar-cta" href="#signup" data-c="nav.cta" data-track="nav_cta"></a>
+  </div>
+</header>
+
+<main id="main">
+  <div id="page">
+    <section class="hero wrap" aria-labelledby="h1">
+      <div class="hero-txt">
+        <p class="eyebrow" data-a="eyebrow"></p>
+        <h1 id="h1" tabindex="-1" data-a="headline"></h1>
+        <p class="lede" data-a="subhead"></p>
+        <form class="signup" id="signup" novalidate data-form="hero"></form>
+      </div>
+      <figure class="plate hero-img">
+        <picture>
+          <source srcset="img/notebook-open.webp" type="image/webp">
+          <img src="img/notebook-open.png" width="757" height="409" fetchpriority="high" data-alt="images.open" alt="">
+        </picture>
+      </figure>
+    </section>
+
+    <section class="wrap" aria-label="Highlights">
+      <ul class="proofs" id="proofs"></ul>
+    </section>
+
+    <section class="story wrap" aria-labelledby="story-title">
+      <h2 id="story-title" data-a="storyTitle"></h2>
+      <ol class="steps" id="steps"></ol>
+    </section>
+
+    <section class="price wrap" id="price" aria-labelledby="price-title">
+      <figure class="plate price-img">
+        <picture>
+          <source srcset="img/notebook-closed.webp" type="image/webp">
+          <img src="img/notebook-closed.png" width="757" height="418" loading="lazy" decoding="async" data-alt="images.closed" alt="">
+        </picture>
+      </figure>
+      <div class="price-txt">
+        <h2 id="price-title" data-c="price.title"></h2>
+        <p class="eyebrow" data-c="price.label"></p>
+        <p class="amount" id="amount"></p>
+        <p class="price-note" data-c="price.note"></p>
+        <ul class="details" id="details"></ul>
+        <form class="signup" novalidate data-form="price"></form>
+      </div>
+    </section>
+  </div>
+
+  <section class="thanks wrap" id="thanks" aria-labelledby="thanks-title" hidden>
+    <div class="thanks-card">
+      <h1 id="thanks-title" tabindex="-1" data-c="thanks.title"></h1>
+      <p class="lede" data-c="thanks.body"></p>
+      <div id="offer">
+        <p class="offer-lead" data-c="thanks.offerLead"></p>
+        <button type="button" class="btn" id="reserve" data-c="reserve.button"></button>
+      </div>
+      <div class="disclosure" id="disclosure" role="status" hidden>
+        <h2 id="disclosure-title" tabindex="-1" data-c="disclosure.title"></h2>
+        <p data-c="disclosure.body"></p>
+      </div>
+      <p><a href="#" class="back" id="back" data-c="thanks.back"></a></p>
+    </div>
+  </section>
+</main>
+
+<footer class="foot wrap"><p data-c="footer"></p></footer>
+
+<template id="signup-tpl">
+  <div class="field">
+    <label class="sr-only"></label>
+    <input type="email" name="email" autocomplete="email" inputmode="email" required>
+    <button type="submit" class="btn"></button>
+  </div>
+  <p class="form-note"></p>
+  <p class="form-error" role="alert" hidden></p>
+</template>
+
+<noscript><p class="wrap noscript">This page needs JavaScript to show its content.</p></noscript>
+</body>
+</html>
