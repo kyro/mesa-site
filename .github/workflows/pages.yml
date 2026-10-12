@@ -1,0 +1,38 @@
+# Opt-in GitHub Pages deploy that publishes the site WITHOUT /smoke-test/.
+# Inactive until both are true:
+#   1. Settings > Pages > Source is set to "GitHub Actions"
+#   2. Repo variable PAGES_DEPLOY_VIA_ACTIONS is set to "true"
+# While Pages still builds from the main branch (legacy), everything on main is
+# published, including /smoke-test/.
+name: Deploy Pages (excludes smoke-test)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: vars.PAGES_DEPLOY_VIA_ACTIONS == 'true'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Assemble site without smoke-test
+        run: rsync -a --exclude '.git' --exclude '.github' --exclude 'smoke-test' ./ _site/
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deploy
+        uses: actions/deploy-pages@v4

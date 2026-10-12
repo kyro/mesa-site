@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<!-- Static fallbacks for crawlers; app.js overwrites these from copy.js (meta.*). -->
+<title>Sheaf: a pocket notebook that draws your day</title>
+<meta name="description" content="A small e-ink notebook with a pen and a cover. You write on it like paper. Each morning it draws the day's page for you.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sheaf">
+<meta property="og:title" content="Sheaf: a pocket notebook that draws your day">
+<meta property="og:description" content="A small e-ink notebook with a pen and a cover. You write on it like paper. Each morning it draws the day's page for you.">
+<!-- Canonical and OG URLs assume this folder is served as the root of heysheaf.com. -->
+<link rel="canonical" href="https://heysheaf.com/">
+<meta property="og:url" content="https://heysheaf.com/">
+<meta property="og:image" content="https://heysheaf.com/img/notebook-open-lime.png">
+<meta property="og:image:width" content="751">
+<meta property="og:image:height" content="418">
+<meta property="og:image:alt" content="A small e-ink notebook, open in a lime cover, with a pen resting on its handwritten page">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#f4f2ec">
+<link rel="icon" href="img/sheaf-mark.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Anton&family=Permanent+Marker&family=Archivo:wght@400;700&display=swap">
+<link rel="preload" as="image" href="img/notebook-open-lime.webp" type="image/webp" fetchpriority="high">
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="style.css">
+<script src="copy.js" defer></script>
+<script src="app.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="draft" id="draft" hidden></div>
+
+<header class="bar wrap">
+  <a class="wordmark" href="#main"><img src="img/sheaf-wordmark.svg" width="96" height="41" data-alt="productName" alt="Sheaf"></a>
+  <a class="nav-link" href="#about" data-c="nav.link"></a>
+</header>
+
+<main id="main">
+  <div id="page">
+    <section class="hero wrap" aria-labelledby="h1">
+      <div class="hero-head">
+        <p class="eyebrow" data-a="eyebrow"></p>
+        <h1 id="h1" tabindex="-1"></h1>
+      </div>
+      <div class="hero-media">
+        <img class="doodle rays" src="img/motifs/rays.svg" width="160" height="120" alt="">
+        <figure class="card">
+          <picture>
+            <source srcset="img/notebook-open-lime.webp" type="image/webp">
+            <img src="img/notebook-open-lime.png" width="751" height="418" fetchpriority="high" data-alt="images.open" alt="">
+          </picture>
+          <figcaption class="note" data-c="images.caption"></figcaption>
+        </figure>
+        <p class="sticker" id="sticker" aria-hidden="true"></p>
+      </div>
+      <div class="hero-body">
+        <p class="lede" data-a="subhead"></p>
+        <form class="signup" id="signup" novalidate data-form="hero"></form>
+      </div>
+    </section>
+
+    <div class="band" role="presentation"><p class="wrap" data-c="band"></p></div>
+
+    <section class="about wrap" id="about" aria-labelledby="about-title">
+      <figure class="card about-card">
+        <picture>
+          <source srcset="img/notebook-closed-lime.webp" type="image/webp">
+          <img src="img/notebook-closed-lime.png" width="751" height="418" loading="lazy" decoding="async" data-alt="images.closed" alt="">
+        </picture>
+      </figure>
+      <div class="about-txt">
+        <h2 id="about-title"><span class="swipe" data-c="about.title"></span></h2>
+        <p class="lede" data-c="about.body"></p>
+        <ul class="proofs" id="proofs"></ul>
+        <p class="hardware" data-c="about.hardware"></p>
+      </div>
+    </section>
+
+    <section class="signoff wrap" aria-labelledby="signoff-title">
+      <h2 id="signoff-title" class="hand" data-c="signoff"></h2>
+      <img class="doodle squiggle" src="img/motifs/scribble-underline.svg" width="600" height="60" alt="">
+      <form class="signup" novalidate data-form="repeat"></form>
+    </section>
+  </div>
+
+  <section class="thanks wrap" id="thanks" aria-labelledby="thanks-title" hidden>
+    <div class="thanks-card">
+      <h1 id="thanks-title" tabindex="-1" data-c="thanks.title"></h1>
+      <div id="offer">
+        <p class="price-line"><span class="sr-only" data-c="price.label"></span><strong class="amount swipe" id="amount"></strong> <span id="price-note"></span></p>
+        <button type="button" class="btn" id="reserve" data-c="reserve.button"></button>
+        <p class="reserve-note" data-c="reserve.note"></p>
+        <p><button type="button" class="link" id="skip" data-c="thanks.skip"></button></p>
+      </div>
+      <p class="skipped" id="skipped" role="status" tabindex="-1" hidden data-c="thanks.skipped"></p>
+      <div class="disclosure" id="disclosure" role="status" hidden>
+        <h2 id="disclosure-title" tabindex="-1" data-c="disclosure.title"></h2>
+        <div id="disclosure-body"></div>
+      </div>
+      <p class="hand thanks-signoff" aria-hidden="true" data-c="signoff"></p>
+    </div>
+  </section>
+</main>
+
+<footer class="foot wrap">
+  <p data-c="footer.text"></p>
+  <ul class="foot-links" id="foot-links"></ul>
+</footer>
+
+<template id="signup-tpl">
+  <div class="field">
+    <label class="sr-only"></label>
+    <input type="email" name="email" autocomplete="email" inputmode="email" required>
+    <button type="submit" class="btn"></button>
+  </div>
+  <p class="form-note"></p>
+  <p class="form-error" role="alert" hidden></p>
+</template>
+
+<noscript><p class="wrap noscript">This page needs JavaScript to show its content.</p></noscript>
+</body>
+</html>
