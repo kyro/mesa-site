@@ -16,7 +16,10 @@ window.LP_COPY = {
 
   flags: {
     // Set to false (or load the page with ?draft=0) to hide the DRAFT tag.
-    showDraftTag: true
+    showDraftTag: true,
+    // H1 A/B: when enabled (or with ?h1=override), every angle's H1 becomes
+    // this text. The angle's eyebrow, subhead and proofs stay. Events carry h1.
+    headlineOverride: { enabled: false, text: "Think outside the lines." }
   },
 
   variants: {
@@ -30,14 +33,15 @@ window.LP_COPY = {
   meta: {
     title: "{project}: a pocket notebook that draws your day",
     description: "A small e-ink notebook with a pen and a cover. You write on it like paper. Each morning it draws the day's page for you.",
-    ogImageAlt: "A small e-ink notebook, open in an orange cover, with a pen resting on its handwritten page"
+    ogImageAlt: "A small e-ink notebook, open in a lime cover, with a pen resting on its handwritten page"
   },
 
   images: {
     // Renders must carry this label until real prototype photos replace them.
-    caption: "Design in progress",
-    open: "A small e-ink notebook, open in an orange cover, with a pen resting on its handwritten page",
-    closed: "The same notebook closed in its orange cover, pen tucked into the spine"
+    // Shown as the pink sticky note on the hero render.
+    caption: "design in progress",
+    open: "A small e-ink notebook, open in a lime cover, with a pen resting on its handwritten page",
+    closed: "The same notebook closed in its lime cover, pen tucked into the spine"
   },
 
   angles: {
@@ -70,6 +74,18 @@ window.LP_COPY = {
     }
   },
 
+  nav: { link: "The notebook" },
+
+  // The one band (Anton caps).
+  band: "Less scrolling. More scribbling.",
+
+  // Hand-lettered starburst on the hero render. When the H1 already says it
+  // (angle a), the sticker shows `ifHeadlineMatches` instead.
+  sticker: { text: "your move.", ifHeadlineMatches: "just ink." },
+
+  // Sign-off above the repeat signup and on the thank-you screen.
+  signoff: "Your move.",
+
   // Shared, below the fold.
   about: {
     title: "What it is",
@@ -82,7 +98,7 @@ window.LP_COPY = {
     label: "Email address",
     placeholder: "you@email.com",
     button: "Get early access",
-    repeatTitle: "Get early access",
+    note: "Free to join. No card. Leave the list any time.",
     error: "Please enter a valid email address."
   },
 

@@ -12,12 +12,15 @@
 <meta property="og:title" content="Sheaf: a pocket notebook that draws your day">
 <meta property="og:description" content="A small e-ink notebook with a pen and a cover. You write on it like paper. Each morning it draws the day's page for you.">
 <!-- Relative until the domain is decided; most scrapers need an absolute og:image URL. -->
-<meta property="og:image" content="img/notebook-open.png">
-<meta property="og:image:alt" content="A small e-ink notebook, open in an orange cover, with a pen resting on its handwritten page">
+<meta property="og:image" content="img/notebook-open-lime.png">
+<meta property="og:image:alt" content="A small e-ink notebook, open in a lime cover, with a pen resting on its handwritten page">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#f5f4f0">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='7' y='4' width='18' height='24' rx='3' fill='%231c1c1a'/%3E%3C/svg%3E">
-<link rel="preload" as="image" href="img/notebook-open.webp" type="image/webp" fetchpriority="high">
+<meta name="theme-color" content="#f4f2ec">
+<link rel="icon" href="img/sheaf-mark.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Anton&family=Permanent+Marker&family=Archivo:wght@400;700&display=swap">
+<link rel="preload" as="image" href="img/notebook-open-lime.webp" type="image/webp" fetchpriority="high">
 <link rel="stylesheet" href="theme.css">
 <link rel="stylesheet" href="style.css">
 <script src="copy.js" defer></script>
@@ -27,48 +30,55 @@
 <a class="skip" href="#main">Skip to content</a>
 <div class="draft" id="draft" hidden></div>
 
-<header class="bar">
-  <div class="wrap bar-in">
-    <a class="wordmark" href="#main" data-c="productName">Sheaf</a>
-  </div>
+<header class="bar wrap">
+  <a class="wordmark" href="#main"><img src="img/sheaf-wordmark.svg" width="96" height="41" data-alt="productName" alt="Sheaf"></a>
+  <a class="nav-link" href="#about" data-c="nav.link"></a>
 </header>
 
 <main id="main">
   <div id="page">
     <section class="hero wrap" aria-labelledby="h1">
-      <div class="hero-txt">
+      <div class="hero-head">
         <p class="eyebrow" data-a="eyebrow"></p>
-        <h1 id="h1" tabindex="-1" data-a="headline"></h1>
+        <h1 id="h1" tabindex="-1"></h1>
+      </div>
+      <div class="hero-media">
+        <img class="doodle rays" src="img/motifs/rays.svg" width="160" height="120" alt="">
+        <figure class="card">
+          <picture>
+            <source srcset="img/notebook-open-lime.webp" type="image/webp">
+            <img src="img/notebook-open-lime.png" width="751" height="418" fetchpriority="high" data-alt="images.open" alt="">
+          </picture>
+          <figcaption class="note" data-c="images.caption"></figcaption>
+        </figure>
+        <p class="sticker" id="sticker" aria-hidden="true"></p>
+      </div>
+      <div class="hero-body">
         <p class="lede" data-a="subhead"></p>
         <form class="signup" id="signup" novalidate data-form="hero"></form>
       </div>
-      <figure class="plate hero-img">
-        <picture>
-          <source srcset="img/notebook-open.webp" type="image/webp">
-          <img src="img/notebook-open.png" width="757" height="409" fetchpriority="high" data-alt="images.open" alt="">
-        </picture>
-        <figcaption class="caption" data-c="images.caption"></figcaption>
-      </figure>
     </section>
 
-    <section class="about wrap" aria-labelledby="about-title">
-      <figure class="plate about-img">
+    <div class="band" role="presentation"><p class="wrap" data-c="band"></p></div>
+
+    <section class="about wrap" id="about" aria-labelledby="about-title">
+      <figure class="card about-card">
         <picture>
-          <source srcset="img/notebook-closed.webp" type="image/webp">
-          <img src="img/notebook-closed.png" width="757" height="418" loading="lazy" decoding="async" data-alt="images.closed" alt="">
+          <source srcset="img/notebook-closed-lime.webp" type="image/webp">
+          <img src="img/notebook-closed-lime.png" width="751" height="418" loading="lazy" decoding="async" data-alt="images.closed" alt="">
         </picture>
-        <figcaption class="caption" data-c="images.caption"></figcaption>
       </figure>
       <div class="about-txt">
-        <h2 id="about-title" data-c="about.title"></h2>
+        <h2 id="about-title"><span class="swipe" data-c="about.title"></span></h2>
         <p class="lede" data-c="about.body"></p>
         <ul class="proofs" id="proofs"></ul>
         <p class="hardware" data-c="about.hardware"></p>
       </div>
     </section>
 
-    <section class="repeat wrap" aria-labelledby="repeat-title">
-      <h2 id="repeat-title" data-c="signup.repeatTitle"></h2>
+    <section class="signoff wrap" aria-labelledby="signoff-title">
+      <h2 id="signoff-title" class="hand" data-c="signoff"></h2>
+      <img class="doodle squiggle" src="img/motifs/scribble-underline.svg" width="600" height="60" alt="">
       <form class="signup" novalidate data-form="repeat"></form>
     </section>
   </div>
@@ -77,7 +87,7 @@
     <div class="thanks-card">
       <h1 id="thanks-title" tabindex="-1" data-c="thanks.title"></h1>
       <div id="offer">
-        <p class="price-line"><span class="sr-only" data-c="price.label"></span><strong class="amount" id="amount"></strong><span aria-hidden="true"> · </span><span id="price-note"></span></p>
+        <p class="price-line"><span class="sr-only" data-c="price.label"></span><strong class="amount swipe" id="amount"></strong> <span id="price-note"></span></p>
         <button type="button" class="btn" id="reserve" data-c="reserve.button"></button>
         <p class="reserve-note" data-c="reserve.note"></p>
         <p><button type="button" class="link" id="skip" data-c="thanks.skip"></button></p>
@@ -87,6 +97,7 @@
         <h2 id="disclosure-title" tabindex="-1" data-c="disclosure.title"></h2>
         <div id="disclosure-body"></div>
       </div>
+      <p class="hand thanks-signoff" aria-hidden="true" data-c="signoff"></p>
     </div>
   </section>
 </main>
@@ -102,6 +113,7 @@
     <input type="email" name="email" autocomplete="email" inputmode="email" required>
     <button type="submit" class="btn"></button>
   </div>
+  <p class="form-note"></p>
   <p class="form-error" role="alert" hidden></p>
 </template>
 

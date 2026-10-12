@@ -19,6 +19,7 @@ One layout. The URL params choose the variant:
 | `angle` | `a`, `b`, `c`          | `a`             | Eyebrow, headline, subhead, proofs |
 | `price` | `399`, `449`           | random, sticky  | Price line on the thank-you screen |
 | `draft` | `0`                    | (shown)         | Hides the DRAFT tag |
+| `h1`    | `override`             | off             | H1 becomes "Think outside the lines." for every angle (A/B test) |
 | `view`  | `thanks`, `disclosure` | (landing)       | Opens that state directly, for QA |
 | `debug` | `1`                    | off             | Logs analytics stub events to the console |
 
@@ -43,16 +44,26 @@ All copy lives in `copy.js` (`window.LP_COPY`). Edit only the values there. The 
 - `about.*` holds the shared "what it is" paragraph and the hardware line.
 - `price.note` is the price line. Set `price.useFallback: true` to use the "smart features" wording until the AI layer is named. No renewal price is shown.
 - `reserve.*` holds the deposit amount and the button label, and `disclosure.*` holds the fake-door text.
-- `images.caption` is the "Design in progress" label on renders. Keep it until real prototype photos replace them.
-- `footer.*` holds the in-development line and the privacy and contact links. Links in `[BRACKETS]` render as `#` until the domain is decided.
+- `flags.headlineOverride` turns on the H1 A/B ("Think outside the lines.") for everyone; `?h1=override` does it for one visit. Events carry `h1: "angle" | "override"`.
+- `nav.link`, `band`, `sticker` and `signoff` hold the v3 lines. "Your move." is the sign-off and the starburst sticker; on angle a, where the H1 already says it, the sticker shows `sticker.ifHeadlineMatches` instead.
+- `images.caption` is the "design in progress" pink sticky note on the hero render. Keep it until real prototype photos replace the renders.
+- `footer.*` holds the in-development line and the privacy and contact links. Links in `[BRACKETS]` render as `#` until those pages exist.
 - `meta.*` holds the page title, description and OG text. The static tags in `index.html` are crawler fallbacks, so update them too.
 - `flags.showDraftTag: false` removes the DRAFT tag for everyone.
 
 Copy rules: no headline or eyebrow may contain "AI" (`app.js` warns in the console and in the DRAFT tag). Say "list" or "early access", never "waitlist". No "membership", renewal price, ship date or batch, and never say a place is held.
 
-## Re-skin
+## Look (Sheaf v3)
 
-The current neutral look is a placeholder until the Sheaf v3 visuals arrive. Every color, font, radius and shadow is a CSS variable in `theme.css`, and `style.css` holds only layout and component rules. To re-skin, edit `theme.css`. New fonts or image assets can go in this folder.
+Colors and fonts are tokens in `theme.css` (from the v3 `tokens.css` and `palette.json`); `style.css` holds layout and components.
+
+- **Palette budget:** paper 70%, ink 20%, lime at most 8%, pink at most 2% per screen. The lime cover renders count toward the lime budget.
+- **Lime** is only a highlighter swipe or patch (behind the hero render, the "What it is" title and the price). It is never a button and never a full-bleed background.
+- **Buttons:** every button is an ink pill.
+- **Pink:** one pink sticker per screen.
+- **Type:** Bricolage Grotesque ExtraBold for display, Anton caps for the band, Permanent Marker for stickers and the sign-off, Archivo for body. Fonts load from Google Fonts.
+- **Structure:** one headline, one nav link, one button style, one band.
+- **Assets:** wordmark W1 (`img/sheaf-wordmark.svg`), the sheet-stack mark as favicon, and doodle motifs in `img/motifs/`. The motifs are placeholders until a real hand redraws them.
 
 ## Stubs (not wired)
 
@@ -64,7 +75,7 @@ All stubs are at the top of `app.js`:
 
 ## Images
 
-`img/notebook-open.*` and `img/notebook-closed.*` are the designer's render crops. The thin white borders are trimmed, and the lettering on the pen and the mark under the screen are retouched out. No other edits were made, so the device keeps its true shape. Each image ships as WebP with a PNG fallback.
+`img/notebook-open-lime.*` and `img/notebook-closed-lime.*` are the v3 lime-cover renders. The thin white borders are trimmed, and the lettering on the pen and the mark under the screen are retouched out. No other edits were made, so the device keeps its true shape. Each image ships as WebP with a PNG fallback.
 
 ## Deploy
 

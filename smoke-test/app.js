@@ -10,6 +10,8 @@
   var angleKey = C.angles[params.get("angle")] ? params.get("angle") : V.defaultAngle;
   var priceKey = resolvePrice();
   var A = C.angles[angleKey];
+  var ho = C.flags.headlineOverride || {};
+  var h1Override = !!ho.text && (ho.enabled || params.get("h1") === "override");
 
   // ?price= wins; otherwise a 50/50 random price, sticky per visitor.
   function resolvePrice() {
@@ -38,6 +40,7 @@
   var baseProps = {
     angle: angleKey,
     price: priceKey,
+    h1: h1Override ? "override" : "angle",
     utm_source: params.get("utm_source") || "",
     utm_campaign: params.get("utm_campaign") || "",
     utm_content: params.get("utm_content") || ""
@@ -86,6 +89,15 @@
   $$("[data-a]").forEach(function (n) { n.textContent = fill(A[n.dataset.a]); });
   $$("[data-alt]").forEach(function (n) { n.alt = fill(get(C, n.dataset.alt)); });
 
+  var headline = fill(h1Override ? ho.text : A.headline);
+  var h1 = $("#h1");
+  h1.textContent = headline;
+  // Display type scales down for longer headlines.
+  h1.dataset.len = headline.length <= 12 ? "s" : headline.length <= 26 ? "m" : "l";
+
+  var norm = function (t) { return t.toLowerCase().replace(/[^a-z]/g, ""); };
+  $("#sticker").textContent = fill(norm(headline) === norm(C.sticker.text) ? C.sticker.ifHeadlineMatches : C.sticker.text);
+
   A.proofs.forEach(function (p) { $("#proofs").appendChild(el("li", null, p)); });
   $("#amount").textContent = tokens.price;
   $("#price-note").textContent = fill(C.price.useFallback ? C.price.noteFallback : C.price.note);
@@ -105,7 +117,7 @@
   meta('meta[property="og:image:alt"]', C.meta.ogImageAlt);
 
   /* --- headline guard -------------------------------------------------- */
-  var headlines = [A.eyebrow, A.headline, C.about.title, C.signup.repeatTitle, C.thanks.title, C.disclosure.title];
+  var headlines = [A.eyebrow, headline, C.band, C.about.title, C.signoff, C.thanks.title, C.disclosure.title];
   var aiHeadlines = headlines.map(fill).filter(function (h) { return /\bAI\b/i.test(h); });
   if (aiHeadlines.length) console.warn("[copy] Headlines must not contain 'AI':", aiHeadlines);
 
@@ -113,6 +125,7 @@
   if (C.flags.showDraftTag && params.get("draft") !== "0") {
     var tag = $("#draft");
     tag.textContent = "DRAFT · angle " + angleKey.toUpperCase() + " · " + tokens.price +
+      (h1Override ? " · H1 override" : "") +
       (aiHeadlines.length ? " · headline says AI" : "");
     tag.hidden = false;
   }
@@ -128,6 +141,7 @@
     input.id = id;
     input.placeholder = fill(C.signup.placeholder);
     $("button", form).textContent = fill(C.signup.button);
+    $(".form-note", form).textContent = fill(C.signup.note);
     err.id = id + "-error";
     err.textContent = fill(C.signup.error);
 

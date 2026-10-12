@@ -1,44 +1,50 @@
 /*
- * THEME TOKENS. The current look is a neutral placeholder; re-skin by editing
- * this file only. style.css uses these variables for every color, font and radius.
+ * THEME TOKENS: Sheaf v3 ("think outside the lines").
+ * Palette budget per screen: paper 70% · ink 20% · lime <= 8% · pink <= 2%.
+ * Lime is only ever a highlighter swipe or patch: never a button, never a
+ * full-bleed background. Every button is an ink pill. One pink sticker per screen.
  */
+/* Fonts are loaded by the <link> in index.html. */
 :root {
-  /* surfaces */
-  --bg: #f5f4f0;
-  --surface: #ffffff;
-  --plate: #f2f2f2;           /* matches the render backdrop so images sit seamlessly */
-  --line: #e2e0d9;
+  /* palette (palette.json) */
+  --paper: #f4f2ec;
+  --ink: #111111;
+  --highlighter: #d7ee3a;
+  --sticker: #ff5fa8;
+  --graphite: #5e5c57;
+  --pencil: #bdbab1;
+  --band: #e9e7e0;
 
-  /* text */
-  --ink: #1c1c1a;
-  --ink-2: #4f4d48;
-  --ink-3: #66645e;
-  --accent: #e2703f;
+  /* roles */
+  --bg: var(--paper);
+  --surface: #ffffff;
+  --plate: #f2f2f2;           /* matches the render backdrop */
+  --line: var(--pencil);
+  --text: var(--ink);
+  --text-2: var(--graphite);
   --error: #b3261e;
 
-  /* primary CTA */
-  --cta-bg: #1c1c1a;
-  --cta-bg-hover: #33322f;
-  --cta-ink: #f5f4f0;
+  --cta-bg: var(--ink);
+  --cta-bg-hover: #2a2a2a;
+  --cta-ink: var(--paper);
 
-  /* form fields */
   --field-bg: #ffffff;
-  --field-line: #cfccc4;
-  --field-placeholder: #8b8981;
+  --field-line: var(--ink);
+  --field-placeholder: #8a877f;
 
-  /* DRAFT tag */
-  --draft-bg: #ffdf5e;
-  --draft-ink: #1c1c1a;
+  --draft-bg: var(--ink);
+  --draft-ink: var(--paper);
 
   /* type */
-  --font-display: "Iowan Old Style", "Charter", "Bitstream Charter", "Sitka Text", Cambria, "Noto Serif", Georgia, serif;
-  --font-body: system-ui, -apple-system, "Segoe UI", Inter, Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-wordmark: var(--font-display);
+  --font-display: "Bricolage Grotesque", system-ui, sans-serif;  /* 800, -2%, lh .9 */
+  --font-band: "Anton", Impact, "Arial Narrow", sans-serif;       /* caps */
+  --font-hand: "Permanent Marker", "Comic Sans MS", cursive;      /* notes and stickers */
+  --font-body: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
 
   /* shape and layout */
-  --radius: 14px;
+  --radius: 4px;
   --radius-control: 999px;
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, .12);
-  --max: 1120px;
-  --gutter: clamp(20px, 5vw, 48px);
+  --stroke: 2px;
+  --max: 1200px;
+  --gutter: clamp(20px, 5vw, 56px);
 }
