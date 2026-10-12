@@ -5,15 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <!-- Static fallbacks for crawlers; app.js overwrites these from copy.js (meta.*). -->
-<title>Sheaf: a calm, paper-like notebook</title>
-<meta name="description" content="A compact e-ink notebook that turns what you write into today's next steps. Quiet by design.">
+<title>Sheaf: a pocket notebook that draws your day</title>
+<meta name="description" content="A small e-ink notebook with a pen and a cover. You write on it like paper. Each morning it draws the day's page for you.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Sheaf">
-<meta property="og:title" content="Sheaf: a calm, paper-like notebook">
-<meta property="og:description" content="A compact e-ink notebook that turns what you write into today's next steps. Quiet by design.">
+<meta property="og:title" content="Sheaf: a pocket notebook that draws your day">
+<meta property="og:description" content="A small e-ink notebook with a pen and a cover. You write on it like paper. Each morning it draws the day's page for you.">
 <!-- Relative until the domain is decided; most scrapers need an absolute og:image URL. -->
 <meta property="og:image" content="img/notebook-open.png">
-<meta property="og:image:alt" content="A compact e-ink notebook, open in an orange folio cover, with a stylus resting on the screen">
+<meta property="og:image:alt" content="A small e-ink notebook, open in an orange cover, with a pen resting on its handwritten page">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#f5f4f0">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='7' y='4' width='18' height='24' rx='3' fill='%231c1c1a'/%3E%3C/svg%3E">
@@ -30,7 +30,6 @@
 <header class="bar">
   <div class="wrap bar-in">
     <a class="wordmark" href="#main" data-c="productName">Sheaf</a>
-    <a class="bar-cta" href="#signup" data-c="nav.cta" data-track="nav_cta"></a>
   </div>
 </header>
 
@@ -48,54 +47,54 @@
           <source srcset="img/notebook-open.webp" type="image/webp">
           <img src="img/notebook-open.png" width="757" height="409" fetchpriority="high" data-alt="images.open" alt="">
         </picture>
+        <figcaption class="caption" data-c="images.caption"></figcaption>
       </figure>
     </section>
 
-    <section class="wrap" aria-label="Highlights">
-      <ul class="proofs" id="proofs"></ul>
-    </section>
-
-    <section class="story wrap" aria-labelledby="story-title">
-      <h2 id="story-title" data-a="storyTitle"></h2>
-      <ol class="steps" id="steps"></ol>
-    </section>
-
-    <section class="price wrap" id="price" aria-labelledby="price-title">
-      <figure class="plate price-img">
+    <section class="about wrap" aria-labelledby="about-title">
+      <figure class="plate about-img">
         <picture>
           <source srcset="img/notebook-closed.webp" type="image/webp">
           <img src="img/notebook-closed.png" width="757" height="418" loading="lazy" decoding="async" data-alt="images.closed" alt="">
         </picture>
+        <figcaption class="caption" data-c="images.caption"></figcaption>
       </figure>
-      <div class="price-txt">
-        <h2 id="price-title" data-c="price.title"></h2>
-        <p class="eyebrow" data-c="price.label"></p>
-        <p class="amount" id="amount"></p>
-        <p class="price-note" data-c="price.note"></p>
-        <ul class="details" id="details"></ul>
-        <form class="signup" novalidate data-form="price"></form>
+      <div class="about-txt">
+        <h2 id="about-title" data-c="about.title"></h2>
+        <p class="lede" data-c="about.body"></p>
+        <ul class="proofs" id="proofs"></ul>
+        <p class="hardware" data-c="about.hardware"></p>
       </div>
+    </section>
+
+    <section class="repeat wrap" aria-labelledby="repeat-title">
+      <h2 id="repeat-title" data-c="signup.repeatTitle"></h2>
+      <form class="signup" novalidate data-form="repeat"></form>
     </section>
   </div>
 
   <section class="thanks wrap" id="thanks" aria-labelledby="thanks-title" hidden>
     <div class="thanks-card">
       <h1 id="thanks-title" tabindex="-1" data-c="thanks.title"></h1>
-      <p class="lede" data-c="thanks.body"></p>
       <div id="offer">
-        <p class="offer-lead" data-c="thanks.offerLead"></p>
+        <p class="price-line"><span class="sr-only" data-c="price.label"></span><strong class="amount" id="amount"></strong><span aria-hidden="true"> · </span><span id="price-note"></span></p>
         <button type="button" class="btn" id="reserve" data-c="reserve.button"></button>
+        <p class="reserve-note" data-c="reserve.note"></p>
+        <p><button type="button" class="link" id="skip" data-c="thanks.skip"></button></p>
       </div>
+      <p class="skipped" id="skipped" role="status" tabindex="-1" hidden data-c="thanks.skipped"></p>
       <div class="disclosure" id="disclosure" role="status" hidden>
         <h2 id="disclosure-title" tabindex="-1" data-c="disclosure.title"></h2>
-        <p data-c="disclosure.body"></p>
+        <div id="disclosure-body"></div>
       </div>
-      <p><a href="#" class="back" id="back" data-c="thanks.back"></a></p>
     </div>
   </section>
 </main>
 
-<footer class="foot wrap"><p data-c="footer"></p></footer>
+<footer class="foot wrap">
+  <p data-c="footer.text"></p>
+  <ul class="foot-links" id="foot-links"></ul>
+</footer>
 
 <template id="signup-tpl">
   <div class="field">
@@ -103,7 +102,6 @@
     <input type="email" name="email" autocomplete="email" inputmode="email" required>
     <button type="submit" class="btn"></button>
   </div>
-  <p class="form-note"></p>
   <p class="form-error" role="alert" hidden></p>
 </template>
 

@@ -5,14 +5,47 @@
   var params = new URLSearchParams(location.search);
   var debug = params.get("debug") === "1";
 
+  /* --- variant resolution --------------------------------------------- */
+  var V = C.variants;
+  var angleKey = C.angles[params.get("angle")] ? params.get("angle") : V.defaultAngle;
+  var priceKey = resolvePrice();
+  var A = C.angles[angleKey];
+
+  // ?price= wins; otherwise a 50/50 random price, sticky per visitor.
+  function resolvePrice() {
+    var fromUrl = params.get("price");
+    if (V.prices.indexOf(fromUrl) > -1) return fromUrl;
+    var KEY = "lp_price";
+    var stored = null;
+    try { stored = localStorage.getItem(KEY); } catch (e) { /* storage blocked */ }
+    if (!stored) {
+      var m = document.cookie.match(/(?:^|; )lp_price=(\d+)/);
+      stored = m && m[1];
+    }
+    if (V.prices.indexOf(stored) < 0) stored = V.prices[Math.floor(Math.random() * V.prices.length)];
+    try { localStorage.setItem(KEY, stored); } catch (e) { /* storage blocked */ }
+    document.cookie = KEY + "=" + stored + "; path=/; max-age=31536000; SameSite=Lax";
+    return stored;
+  }
+
   /* ---------------------------------------------------------------------
    * ANALYTICS: NO-OP STUBS. Nothing is sent anywhere.
    * Wire a real provider inside track() when the test goes live.
+   * Events: lp_view, email_submit, thanks_view, reserve_click, skip_click.
+   * Every event carries angle, price, utm_source, utm_campaign, utm_content.
    * With ?debug=1 events are logged to the console for QA.
    * ------------------------------------------------------------------- */
+  var baseProps = {
+    angle: angleKey,
+    price: priceKey,
+    utm_source: params.get("utm_source") || "",
+    utm_campaign: params.get("utm_campaign") || "",
+    utm_content: params.get("utm_content") || ""
+  };
   var analytics = {
-    track: function (event, props) {
-      if (debug) console.info("[analytics stub]", event, props || {});
+    track: function (event, extra) {
+      var props = Object.assign({}, baseProps, extra);
+      if (debug) console.info("[analytics stub]", event, props);
     }
   };
 
@@ -28,16 +61,9 @@
     return Promise.resolve({ ok: true, fakeDoor: true });
   }
 
-  /* --- variant resolution --------------------------------------------- */
-  var V = C.variants;
-  var angleKey = C.angles[params.get("angle")] ? params.get("angle") : V.defaultAngle;
-  var priceKey = V.prices.indexOf(params.get("price")) > -1 ? params.get("price") : V.defaultPrice;
-  var A = C.angles[angleKey];
-  var variant = { angle: angleKey, price: priceKey };
-
+  /* --- copy ------------------------------------------------------------ */
   var tokens = {
     project: C.productName,
-    ai: C.ai.useFallback ? C.ai.fallback : C.ai.name,
     price: V.currency + priceKey,
     deposit: C.reserve.deposit
   };
@@ -56,21 +82,20 @@
     return n;
   }
 
-  /* --- copy ------------------------------------------------------------ */
   $$("[data-c]").forEach(function (n) { n.textContent = fill(get(C, n.dataset.c)); });
   $$("[data-a]").forEach(function (n) { n.textContent = fill(A[n.dataset.a]); });
   $$("[data-alt]").forEach(function (n) { n.alt = fill(get(C, n.dataset.alt)); });
-  $("#amount").textContent = tokens.price;
 
   A.proofs.forEach(function (p) { $("#proofs").appendChild(el("li", null, p)); });
-  A.story.forEach(function (s, i) {
-    var li = el("li");
-    li.appendChild(el("span", "step-n", String(i + 1).padStart(2, "0")));
-    li.appendChild(el("h3", null, s.title));
-    li.appendChild(el("p", null, s.body));
-    $("#steps").appendChild(li);
+  $("#amount").textContent = tokens.price;
+  $("#price-note").textContent = fill(C.price.useFallback ? C.price.noteFallback : C.price.note);
+  C.disclosure.body.forEach(function (p) { $("#disclosure-body").appendChild(el("p", null, p)); });
+  C.footer.links.forEach(function (l) {
+    var li = el("li"), a = el("a", null, l.label);
+    a.href = /^\[.*\]$/.test(l.href) ? "#" : l.href;
+    li.appendChild(a);
+    $("#foot-links").appendChild(li);
   });
-  C.price.details.forEach(function (d) { $("#details").appendChild(el("li", null, d)); });
 
   document.title = fill(C.meta.title);
   function meta(sel, val) { var m = $(sel); if (m) m.setAttribute("content", fill(val)); }
@@ -80,13 +105,12 @@
   meta('meta[property="og:image:alt"]', C.meta.ogImageAlt);
 
   /* --- headline guard -------------------------------------------------- */
-  var headlines = [A.headline, A.storyTitle, C.price.title, C.thanks.title, C.disclosure.title];
+  var headlines = [A.eyebrow, A.headline, C.about.title, C.signup.repeatTitle, C.thanks.title, C.disclosure.title];
   var aiHeadlines = headlines.map(fill).filter(function (h) { return /\bAI\b/i.test(h); });
   if (aiHeadlines.length) console.warn("[copy] Headlines must not contain 'AI':", aiHeadlines);
 
   /* --- DRAFT tag ------------------------------------------------------- */
-  var showDraft = C.flags.showDraftTag && params.get("draft") !== "0";
-  if (showDraft) {
+  if (C.flags.showDraftTag && params.get("draft") !== "0") {
     var tag = $("#draft");
     tag.textContent = "DRAFT · angle " + angleKey.toUpperCase() + " · " + tokens.price +
       (aiHeadlines.length ? " · headline says AI" : "");
@@ -104,7 +128,6 @@
     input.id = id;
     input.placeholder = fill(C.signup.placeholder);
     $("button", form).textContent = fill(C.signup.button);
-    $(".form-note", form).textContent = fill(C.signup.note);
     err.id = id + "-error";
     err.textContent = fill(C.signup.error);
 
@@ -120,42 +143,37 @@
         input.focus();
         return;
       }
-      analytics.track("signup_submit", { form: form.dataset.form, angle: angleKey, price: priceKey });
+      analytics.track("email_submit", { form: form.dataset.form });
       submitSignup(input.value.trim()).then(function () { show("thanks"); });
     });
   });
 
-  /* --- views: page -> thanks -> disclosure ---------------------------- */
-  var page = $("#page"), thanks = $("#thanks"), offer = $("#offer"), disclosure = $("#disclosure");
+  /* --- views: page -> thanks (price + Reserve) -> disclosure ---------- */
+  var page = $("#page"), thanks = $("#thanks");
   function show(view) {
-    var onThanks = view === "thanks" || view === "disclosure";
-    page.hidden = onThanks;
-    thanks.hidden = !onThanks;
-    $(".bar-cta").hidden = onThanks;
-    offer.hidden = view === "disclosure";
-    disclosure.hidden = view !== "disclosure";
+    page.hidden = view !== "page";
+    thanks.hidden = view === "page";
+    $("#offer").hidden = view !== "thanks";
+    $("#skipped").hidden = view !== "skipped";
+    $("#disclosure").hidden = view !== "disclosure";
     window.scrollTo(0, 0);
-    if (view === "thanks") { $("#thanks-title").focus(); analytics.track("thanks_view", variant); }
-    if (view === "disclosure") { $("#disclosure-title").focus(); analytics.track("disclosure_view", variant); }
+    if (view === "thanks") { $("#thanks-title").focus(); analytics.track("thanks_view"); }
+    if (view === "disclosure") $("#disclosure-title").focus();
   }
 
   $("#reserve").addEventListener("click", function () {
-    analytics.track("reserve_click", { angle: angleKey, price: priceKey, deposit: C.reserve.deposit });
+    analytics.track("reserve_click", { deposit: C.reserve.deposit });
     startReserve().then(function () { show("disclosure"); });
   });
-  $("#back").addEventListener("click", function (e) {
-    e.preventDefault();
-    show("page");
-    $("#h1").focus({ preventScroll: true });
-  });
-  $$("[data-track]").forEach(function (n) {
-    n.addEventListener("click", function () { analytics.track(n.dataset.track, variant); });
+  $("#skip").addEventListener("click", function () {
+    analytics.track("skip_click");
+    show("skipped");
+    $("#skipped").focus();
   });
 
   // ?view=thanks or ?view=disclosure jumps straight to that state for QA/screenshots.
   var startView = params.get("view");
   if (startView === "thanks" || startView === "disclosure") show(startView);
 
-  analytics.track("page_view", variant);
-  document.documentElement.classList.add("ready");
+  analytics.track("lp_view");
 })();

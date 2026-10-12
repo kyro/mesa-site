@@ -1,6 +1,6 @@
 # Sheaf smoke-test landing page (DRAFT)
 
-A single-page demand test for a compact e-ink notebook. It's plain static HTML, CSS and JS like the rest of this repo, with no build step and no dependencies. It is self-contained: nothing outside this folder links to it, and it doesn't use any shared site assets.
+A single-page demand test for a compact e-ink notebook. It's plain static HTML, CSS and JS like the rest of this repo, with no build step and no dependencies. It is self-contained: nothing outside this folder links to it, and it doesn't use any shared site assets. Copy follows designer handoff v0.4, which isn't approved yet.
 
 ## Run it
 
@@ -14,40 +14,45 @@ python3 -m http.server 8000
 
 One layout. The URL params choose the variant:
 
-| Param   | Values          | Default | Effect                          |
-|---------|-----------------|---------|---------------------------------|
-| `angle` | `a`, `b`, `c`   | `a`     | Eyebrow, headline, subhead, highlights, "how it works" |
-| `price` | `399`, `449`    | `399`   | Price reveal amount             |
-| `draft` | `0`             | (shown) | Hides the DRAFT tag             |
-| `view`  | `thanks`, `disclosure` | (page) | Opens that state directly, for QA |
-| `debug` | `1`             | off     | Logs analytics stub events to the console |
+| Param   | Values                 | Default         | Effect |
+|---------|------------------------|-----------------|--------|
+| `angle` | `a`, `b`, `c`          | `a`             | Eyebrow, headline, subhead, proofs |
+| `price` | `399`, `449`           | random, sticky  | Price line on the thank-you screen |
+| `draft` | `0`                    | (shown)         | Hides the DRAFT tag |
+| `view`  | `thanks`, `disclosure` | (landing)       | Opens that state directly, for QA |
+| `debug` | `1`                    | off             | Logs analytics stub events to the console |
 
-- Angle a is "scattered ambitious / becoming" (the lead persona).
-- Angle b is "the paper planner that plans itself".
-- Angle c is "AI power user review desk".
+- Angle a is "Becoming" (lead persona, scattered ambitious).
+- Angle b is "Plans itself".
+- Angle c is "Review desk" (AI power user).
 
-Example: `/smoke-test/?angle=c&price=449`. Unknown values fall back to the defaults.
-
-## Swap copy
-
-All copy lives in `copy.js` (`window.LP_COPY`). Edit only the values there:
-
-- `productName`, `meta.*` and `images.*` (alt text) hold the name, page meta and image descriptions. The static `<title>` and OG tags in `index.html` are crawler fallbacks, so update them too when final meta lands.
-- `angles.a|b|c` holds the per-angle copy.
-- `price.note` uses `{ai}`. Set `ai.name` to the final name, or set `ai.useFallback: true` to read "the smart features" instead. No renewal price is shown.
-- `reserve.deposit` is the deposit amount (`$49`), and `disclosure.*` holds the fake-door text (final text pending).
-- To add or rename a price variant, edit `variants.prices` and `variants.defaultPrice`.
-- `flags.showDraftTag: false` removes the DRAFT tag for everyone.
-
-Rule: no headline may contain "AI". If one does, `app.js` warns in the console and in the DRAFT tag.
-
-## Re-skin
-
-The current neutral look is a placeholder until the Sheaf v3 visuals arrive. Every color, font, radius and shadow is a CSS variable in `theme.css`, and `style.css` holds only layout and component rules. To re-skin, edit `theme.css`. Self-hosted fonts or new image assets can go in this folder.
+Without `?price=`, each visitor gets $399 or $449 at random (50/50). The choice sticks via localStorage and an `lp_price` cookie. Example: `/smoke-test/?angle=c&price=449`. Unknown values fall back to the defaults.
 
 ## Flow
 
-The flow is signup first. The email form is in the hero and again under the price reveal. Submitting it shows a thank-you screen that offers **Reserve for $49 (refundable)**. That button is a fake door: clicking it shows the disclosure. The page has no payment fields.
+1. **Landing page:** eyebrow, headline, subhead, hero image, and the email field with "Get early access". There is no price on this page.
+2. **Below the fold:** a "what it is" paragraph, the three proofs, the hardware line, a repeat signup, and the footer.
+3. **Thank-you screen (after signup):** "You're on the list.", the price line, **Reserve with a $49 refundable deposit**, and "No thanks, just keep me posted".
+4. **Reserve click:** this is a fake door. It shows the disclosure, and the page has no payment fields.
+
+## Swap copy
+
+All copy lives in `copy.js` (`window.LP_COPY`). Edit only the values there. The keys match the designer handoff:
+
+- `angles.a|b|c` holds `eyebrow`, `headline`, `subhead`, `proofs` and `heroDirection`. `heroDirection` is the art direction note; it is not rendered.
+- `about.*` holds the shared "what it is" paragraph and the hardware line.
+- `price.note` is the price line. Set `price.useFallback: true` to use the "smart features" wording until the AI layer is named. No renewal price is shown.
+- `reserve.*` holds the deposit amount and the button label, and `disclosure.*` holds the fake-door text.
+- `images.caption` is the "Design in progress" label on renders. Keep it until real prototype photos replace them.
+- `footer.*` holds the in-development line and the privacy and contact links. Links in `[BRACKETS]` render as `#` until the domain is decided.
+- `meta.*` holds the page title, description and OG text. The static tags in `index.html` are crawler fallbacks, so update them too.
+- `flags.showDraftTag: false` removes the DRAFT tag for everyone.
+
+Copy rules: no headline or eyebrow may contain "AI" (`app.js` warns in the console and in the DRAFT tag). Say "list" or "early access", never "waitlist". No "membership", renewal price, ship date or batch, and never say a place is held.
+
+## Re-skin
+
+The current neutral look is a placeholder until the Sheaf v3 visuals arrive. Every color, font, radius and shadow is a CSS variable in `theme.css`, and `style.css` holds only layout and component rules. To re-skin, edit `theme.css`. New fonts or image assets can go in this folder.
 
 ## Stubs (not wired)
 
@@ -55,11 +60,11 @@ All stubs are at the top of `app.js`:
 
 - `submitSignup(email)` keeps nothing and resolves immediately.
 - `startReserve()` takes no payment and resolves immediately.
-- `analytics.track(event, props)` is a no-op. The events are `page_view`, `nav_cta`, `signup_submit`, `thanks_view`, `reserve_click` and `disclosure_view`.
+- `analytics.track(event, props)` is a no-op. The events are `lp_view`, `email_submit`, `thanks_view`, `reserve_click` and `skip_click`. Each one carries `angle`, `price`, `utm_source`, `utm_campaign` and `utm_content`.
 
 ## Images
 
-`img/notebook-open.*` and `img/notebook-closed.*` are the designer's render crops. The thin white borders are trimmed, and the lettering on the stylus and the mark under the screen are retouched out. No other edits were made, so the device keeps its true shape. Each image ships as WebP with a PNG fallback.
+`img/notebook-open.*` and `img/notebook-closed.*` are the designer's render crops. The thin white borders are trimmed, and the lettering on the pen and the mark under the screen are retouched out. No other edits were made, so the device keeps its true shape. Each image ships as WebP with a PNG fallback.
 
 ## Deploy
 

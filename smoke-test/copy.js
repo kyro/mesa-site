@@ -1,15 +1,15 @@
 /*
- * ALL page copy and variant config lives in this file. Everything here is DRAFT.
- * Swap final copy by editing values only; keys are read by app.js.
+ * ALL page copy and variant config lives in this file. Edit values only;
+ * keys are read by app.js. Source: designer handoff v0.4 (DRAFT, not yet approved).
  *
  * Tokens filled in at render time:
  *   {project}  -> productName
- *   {ai}       -> ai.name, or ai.fallback when ai.useFallback is true
- *   {price}    -> the active price variant, e.g. "$399"
+ *   {price}    -> the visitor's price variant, e.g. "$399"
  *   {deposit}  -> reserve.deposit
  *
- * Rule: no headline (angle headline or any section title) may contain "AI".
- * app.js warns in the console and in the DRAFT tag if one does.
+ * Rules: no headline may contain "AI" (app.js warns if one does).
+ * Say "list" or "early access", never "waitlist". No ship dates, scarcity,
+ * "membership", renewal prices, or claims that a place is held.
  */
 window.LP_COPY = {
   productName: "Sheaf",
@@ -21,105 +21,108 @@ window.LP_COPY = {
 
   variants: {
     defaultAngle: "a",
+    // ?price= wins. Otherwise each visitor gets one price at random, kept
+    // sticky in localStorage + a cookie. Independent of the angle.
     prices: ["399", "449"],
-    defaultPrice: "399",
     currency: "$"
   },
 
-  ai: {
-    name: "[AI]",
-    fallback: "the smart features",
-    useFallback: false
-  },
-
   meta: {
-    title: "{project}: a calm, paper-like notebook",
-    description: "A compact e-ink notebook that turns what you write into today's next steps. Quiet by design.",
-    ogImageAlt: "A compact e-ink notebook, open in an orange folio cover, with a stylus resting on the screen"
+    title: "{project}: a pocket notebook that draws your day",
+    description: "A small e-ink notebook with a pen and a cover. You write on it like paper. Each morning it draws the day's page for you.",
+    ogImageAlt: "A small e-ink notebook, open in an orange cover, with a pen resting on its handwritten page"
   },
 
   images: {
-    open: "A compact e-ink notebook, open in an orange folio cover, with a stylus resting on its handwritten page",
-    closed: "The same notebook closed in its orange folio cover, stylus tucked into the spine"
+    // Renders must carry this label until real prototype photos replace them.
+    caption: "Design in progress",
+    open: "A small e-ink notebook, open in an orange cover, with a pen resting on its handwritten page",
+    closed: "The same notebook closed in its orange cover, pen tucked into the spine"
   },
 
   angles: {
-    // (a) scattered ambitious / becoming. Lead persona, default angle.
+    // a · Becoming. Lead persona (scattered ambitious), default angle.
     a: {
-      eyebrow: "For people with more plans than days",
-      headline: "Become the person your plans already describe.",
-      subhead: "A pocket-sized, paper-like notebook that hands you the next move on each of your projects every morning. Away from screens, even out in the sun.",
-      proofs: ["Today's page is ready when you wake up", "Speak a thought, see it in ink", "No streaks, no guilt, no feed"],
-      storyTitle: "Less sorting. More doing.",
-      story: [
-        { title: "Write it all down", body: "Plans, ideas and half-thoughts, in ink, the way you already do." },
-        { title: "Wake up to a page", body: "Overnight, what you wrote becomes a short list of next steps for each project." },
-        { title: "Do the next thing", body: "One page. Nothing to scroll. Close the cover and get on with it." }
-      ]
+      eyebrow: "For people building something",
+      headline: "Your move.",
+      subhead: "A pocket notebook that draws your day each morning: what's on the calendar, the next step on every project, and what carried over from yesterday. Take it to the park.",
+      proofs: ["The page draws itself every morning", "Say it, see it in ink", "No apps, no feed, no notifications"],
+      heroDirection: "Her on a bench, notebook open on her knee, phone nowhere."
     },
-    // (b) paper planner that plans itself
+    // b · Plans itself. No "ADHD" in headline or ad by default.
     b: {
       eyebrow: "A planner, finally",
       headline: "The paper planner that plans itself.",
-      subhead: "Each morning it draws today's page from your calendar and projects, and carries forward what you didn't finish. You just write.",
-      proofs: ["Calendar blocks drawn for you", "Unfinished items carried forward", "Feels like paper, lasts for weeks"],
-      storyTitle: "A fresh page, already filled in.",
-      story: [
-        { title: "Connect your calendar", body: "Meetings and blocks land on the page before you open the cover." },
-        { title: "Write as usual", body: "Tick things off, scribble notes, add tasks in the margins." },
-        { title: "Tomorrow takes care of itself", body: "Whatever you didn't finish moves to the next page, on its own." }
-      ]
+      subhead: "For brains that jump. A fresh page every morning with yesterday's loose ends already carried over. Nothing to set up, nothing to keep up.",
+      proofs: ["No system to maintain", "No streaks to break", "A short, fixed page, not a blank one"],
+      heroDirection: "A shelf of half-used planners, the notebook on top open to a filled page. Light, not shaming."
     },
-    // (c) AI power user review desk. Headline must not say "AI".
+    // c · Review desk (AI power user). No "AI" in eyebrow or headline.
+    // Claim check pending: if footage doesn't show a pen mark going back to the
+    // agent, proof 2 becomes "Mark it up with a pen" and the subhead drops
+    // "and it goes back to them".
     c: {
-      eyebrow: "For people who work with agents",
-      headline: "A quiet review desk for everything your agents do.",
-      subhead: "Bring your own AI or agents. Read, approve and redirect their work on calm ink instead of another glowing tab.",
-      proofs: ["Bring your own model or agents", "Review and approve in ink", "Nothing pings you"],
-      storyTitle: "Step back from the screen. Stay in charge.",
-      story: [
-        { title: "Connect your tools", body: "Point your own models and agents at the notebook. No new account to babysit." },
-        { title: "Review on paper", body: "Drafts, summaries and decisions arrive as pages you can read properly." },
-        { title: "Redirect in ink", body: "Circle, strike, annotate. Your marks go back as instructions." }
-      ]
+      eyebrow: "For people who run agents",
+      headline: "Your agents, on paper.",
+      subhead: "Each morning, one ink page: what got done, what needs your call, what's next. Mark it with a pen and it goes back to them.",
+      proofs: ["Bring your own AI or agents", "Decide with a pen", "Only what you ask for. Nothing pings you"],
+      heroDirection: "A daily page with three short agent results and handwritten ticks and strikes, coffee, no laptop."
     }
+  },
+
+  // Shared, below the fold.
+  about: {
+    title: "What it is",
+    body: "A small e-ink notebook with a pen and a cover, made to carry everywhere. You write on it like paper. Each morning it draws the day's page for you.",
+    // Add size and battery only once hardware confirms.
+    hardware: "Pocket-size. Readable in direct sun."
   },
 
   signup: {
     label: "Email address",
-    placeholder: "you@example.com",
+    placeholder: "you@email.com",
     button: "Get early access",
-    note: "No payment. We'll only email you about {project}.",
+    repeatTitle: "Get early access",
     error: "Please enter a valid email address."
   },
 
-  price: {
-    title: "One notebook. One price.",
-    label: "Price",
-    // Final wording: "First year of [AI] included, works forever without it".
-    // Set ai.useFallback to true to read "the smart features" instead.
-    note: "First year of {ai} included, works forever without it.",
-    details: ["Notebook, folio cover and stylus", "Ships to early-access members first"]
-  },
-
+  // Thank-you screen (only after signup): price line, Reserve, skip.
   thanks: {
     title: "You're on the list.",
-    body: "We'll email you when {project} is ready. Nothing else.",
-    offerLead: "Want a place in the first batch?",
-    back: "Back to the page"
+    skip: "No thanks, just keep me posted",
+    skipped: "Got it. We'll keep you posted."
+  },
+
+  price: {
+    label: "Price",
+    note: "Notebook, cover and pen. First year of [AI] included, works forever without it.",
+    // Used while the AI layer is unnamed: set useFallback to true.
+    noteFallback: "Notebook, cover and pen. First year of the smart features included, works forever without them.",
+    useFallback: false
   },
 
   reserve: {
     deposit: "$49",
-    button: "Reserve for {deposit} (refundable)"
+    button: "Reserve with a {deposit} refundable deposit",
+    note: "Fully refundable."
   },
 
-  // Fake-door disclosure. Shown only after someone clicks Reserve.
+  // Fake-door disclosure, shown after Reserve is clicked. Never say a place is
+  // "held" or "secured", and never mention a batch or ship date.
   disclosure: {
-    title: "Reservations aren't open yet",
-    body: "[DISCLOSURE SLOT] Final disclosure text pending. Placeholder: {project} is still in development, so we haven't taken a deposit and you haven't been charged. You're on the early-access list and will hear from us first when reservations open."
+    title: "Reservations aren't open yet.",
+    body: [
+      "Thanks for clicking Reserve. We're a small team deciding whether to make {project}, and this tells us a lot. Nobody was charged and we never asked for card details.",
+      "You're already on the list, so you'll hear first if reservations open. You can leave the list any time from any email."
+    ]
   },
 
-  nav: { cta: "Get early access" },
-  footer: "© {project}"
+  footer: {
+    text: "{project} is in development. Features shown are from a working prototype and may change.",
+    // Placeholders until the domain is decided. Hrefs in [brackets] render as "#".
+    links: [
+      { label: "Privacy", href: "[PRIVACY URL]" },
+      { label: "Contact", href: "[CONTACT URL]" }
+    ]
+  }
 };
