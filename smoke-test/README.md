@@ -77,6 +77,10 @@ All stubs are at the top of `app.js`:
 
 `img/notebook-open-lime.*` and `img/notebook-closed-lime.*` are the v3 lime-cover renders. The thin white borders are trimmed, and the lettering on the pen and the mark under the screen are retouched out. No other edits were made, so the device keeps its true shape. Each image ships as WebP with a PNG fallback.
 
+## Domain
+
+The page sets `https://heysheaf.com/` as its canonical and `og:url`, and uses an absolute `og:image`. These assume this folder is served as the root of heysheaf.com. DNS, hosting and deploy config for heysheaf.com are handled separately, and none of it is in this repo.
+
 ## Deploy
 
 This repo's GitHub Pages builds from `main` (legacy, `.nojekyll`), so merging this folder publishes it. See `.github/workflows/pages.yml` for the opt-in deploy that excludes `smoke-test/`. The page also sets `noindex, nofollow`.

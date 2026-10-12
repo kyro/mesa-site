@@ -135,7 +135,7 @@ window.LP_COPY = {
 
   footer: {
     text: "{project} is in development. Features shown are from a working prototype and may change.",
-    // Placeholders until the domain is decided. Hrefs in [brackets] render as "#".
+    // Privacy and contact pages are TBD on heysheaf.com. Hrefs in [brackets] render as "#".
     links: [
       { label: "Privacy", href: "[PRIVACY URL]" },
       { label: "Contact", href: "[CONTACT URL]" }
