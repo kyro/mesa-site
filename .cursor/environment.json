@@ -1,0 +1,10 @@
+{
+  "name": "Mesa marketing site",
+  "start": "bash .cursor/preview.sh",
+  "ports": [
+    {
+      "name": "preview",
+      "port": 8000
+    }
+  ]
+}
